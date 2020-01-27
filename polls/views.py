@@ -42,6 +42,14 @@ class DetailView(generic.DetailView):
             q.save()
         return Question.objects.filter(pub_date__lte=timezone.now())
 
+    def get_context_data(self, **kwargs):
+        context = super(DetailView, self).get_context_data(**kwargs)
+        result = [['Участник', 'Количество голосов']]
+        for pers in self.object.choice_set.all():
+            result.append([' '.join([pers.first_name, pers.last_name]), pers.votes])
+        context['graf'] = result
+        return context
+
 
 class ResultsView(generic.DetailView):
     model = Question
@@ -63,4 +71,10 @@ def vote(request, question_id):
     else:
         selected_choice.votes += 1
         selected_choice.save()
-        return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
+        result = [['Участник', 'Количество голосов']]
+        for pers in question.choice_set.all():
+            result.append([' '.join([pers.first_name,pers.last_name]), pers.votes ])
+        return render(request, 'polls/result.html', {
+            'question': question,
+            'graf': result,
+        })

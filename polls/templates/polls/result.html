@@ -2,6 +2,26 @@
 
 {% block title %}<title>Результаты опроса {{ question.id }}</title>{% endblock %}
 
+{% block script %}
+    <script src="https://www.google.com/jsapi"></script>
+    <script>
+        google.load("visualization", "1", {packages:["corechart"]});
+        google.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            var my_list={{graf|safe}};
+            var data = google.visualization.arrayToDataTable(my_list);
+            var options = {
+            title: 'Результаты голосования',
+            is3D: true,
+            pieResidueSliceLabel: 'Остальное'
+            };
+        var chart = new google.visualization.PieChart(document.getElementById('res'));
+        chart.draw(data, options);
+        }
+    </script>
+{% endblock %}
+
 {% block content %}
 <h1>{{ question.question_text }}</h1>
 
@@ -13,4 +33,5 @@
 
 <a href="{% url 'polls:detail' question.id %}">Проголосовать еще?</a>
 
+<div id="res" style="width: 500px; height: 400px;"></div>
 {% endblock %}

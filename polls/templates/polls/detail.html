@@ -1,6 +1,25 @@
 {% extends "base_generic.html" %}
 
 {% block title %}<title>Голосование {{ question.id }}</title>{% endblock %}
+{% block script %}
+    <script src="https://www.google.com/jsapi"></script>
+    <script>
+        google.load("visualization", "1", {packages:["corechart"]});
+        google.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+        var my_list={{graf|safe}};
+        var data = google.visualization.arrayToDataTable(my_list);
+        var options = {
+        title: 'Результаты голосования',
+        is3D: true,
+        pieResidueSliceLabel: 'Остальное'
+        };
+        var chart = new google.visualization.PieChart(document.getElementById('res'));
+        chart.draw(data, options);
+        }
+    </script>
+{% endblock %}
 
 {% block content %}
 
@@ -37,6 +56,7 @@
             {% endif %}
         {% endfor %}
         </ul>
+        <div id="res" style="width: 500px; height: 400px;"></div>
     {% else %}
         <h2>Эммм, кажется мы забыли про участников, а голосование уже и закончилось.</h2>
         Держите котиков)))<br>
