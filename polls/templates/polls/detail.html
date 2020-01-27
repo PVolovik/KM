@@ -1,0 +1,66 @@
+{% extends "base_generic.html" %}
+
+{% block title %}<title>Голосование {{ question.id }}</title>{% endblock %}
+
+{% block content %}
+
+{% if not question.completed %}
+    <h1>{{ question.question_text }}</h1>
+    <p>Данное голосование завершится {{ question.final_date|date:"d.m.Y в G:i" }} </p>
+    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+    {% if question.choice_set.all%}
+    <form action="{% url 'polls:vote' question.id %}" method="post">
+        {% csrf_token %}
+        <h2>Вы голосуете за: </h2>
+        {% for choice in question.choice_set.all %}
+            <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
+            <label for="choice{{ forloop.counter }}">{{ choice }}</label><br>
+        {% endfor %}
+        <input type="submit" value="Проголосовать">
+    </form>
+    {% else %}
+        <h2>Участников пока не подвезли</h2>
+    {% endif %}
+{% else %}
+    <h1>{{ question.question_text }}</h1>
+    <p>Данное голосование завершилось {{ question.final_date|date:"d.m.Y в G:i" }} </p>
+    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+<h2>Результаты:</h2>
+    {% if question.choice_set.all%}
+        <ul>
+        {% for choice in question.choice_set.all %}
+            {% if forloop.first %}
+                <li> {{ choice }} — {{ choice.votes }} vote{{ choice.votes|pluralize }} --> <b>ПОБЕДИТЕЛЬ</b> </li>
+            {%else%}
+                <li>{{ choice }} — {{ choice.votes }} vote{{ choice.votes|pluralize }}</li>
+            {% endif %}
+        {% endfor %}
+        </ul>
+    {% else %}
+        <h2>Эммм, кажется мы забыли про участников, а голосование уже и закончилось.</h2>
+        Держите котиков)))<br>
+            ┊┈╱╲┊┊┊┊╱╲┈┊┊┊┊┊ <br>
+            ┈▕▕╲╲̵━━╱╱▏▏┈┊┊┊┊<br>
+            ┈╱┳▅̅╮┊┊╭▅̅┳╲╭━━━╮<br>
+            ┈▏▔▔▔╭╮▔▔▔▕┃╮┃┃┃<br>
+            ┈╲┈╲▂╱╲▂╱┈╱┃╰╯̶╯̶╯<br>
+            ┈▕▇▇▇▇▇▇▇▇▏┃┈▕╭╮<br>
+            ╱▔┊┊┊╰╯┊┊╰━╯┈▕┃┫<br>
+            ▏┈╭┊╭━━╮┈▕▂▂▂╱┃┫<br>
+<br>
+            ╔╗╔╗║║╦╗╔═╦ ░╔╗ ░║╔╔╗╦<br>
+            ║║║║║║╠╣╠═║ ░╚╣ ░╠╣║║║<br>
+            ║║╠╝╚╝╩╝╚═║ ░╔╣ ░║╚╚╝║<br>
+<br>
+              ╱╲    ╱╲      <br>
+             ▕▕╲╲̵━━╱╱▏▏     <br>
+             ╱┳▅̅╮  ╭▅̅┳╲╭━━━╮<br>
+             ▏▔▔▔╭╮▔▔▔▕┃╮┃┃┃<br>
+             ╲ ╲▂╱╲▂╱ ╱┃╰╯̶╯̶╯<br>
+             ▕▇▇▇▇▇▇▇▇▏┃ ▕╭╮<br>
+            ╱▔   ╰╯  ╰━╯ ▕┃┫<br>
+            ▏ ╭ ╭━━╮ ▕▂▂▂╱┃┫<br>
+    {% endif %}
+{% endif %}
+{% endblock %}

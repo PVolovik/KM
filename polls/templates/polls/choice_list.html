@@ -1,0 +1,19 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <h1>Список Участников</h1>
+
+    {% if choice_list %}
+    <ul>
+
+      {% for person in choice_list %}
+      <li>
+        <a href="{{ person.get_absolute_url }}">{{ person.first_name}}, {{ person.last_name }}</a> ({{person.age}} лет)
+      </li>
+      {% endfor %}
+
+    </ul>
+    {% else %}
+      <p>Участников пока не подвезли</p>
+    {% endif %}
+{% endblock %}
