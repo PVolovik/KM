@@ -8,7 +8,7 @@
 
       {% for person in choice_list %}
       <li>
-        <a href="{{ person.get_absolute_url }}">{{ person.first_name}}, {{ person.last_name }}</a> ({{person.age}} лет)
+        <a href="{{ person.get_absolute_url }}">{{ person.first_name}}, {{ person.last_name }}</a> ({{person.age|date:"d.m.Y"}} г.р.)
       </li>
       {% endfor %}
 

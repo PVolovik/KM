@@ -6,7 +6,7 @@ from django.utils import timezone
 
 class Question(models.Model):
 	question_text = models.CharField(verbose_name='Вопрос', max_length=200)
-	pub_date      = models.DateTimeField(verbose_name='Дата публикации', default = timezone.now())
+	pub_date      = models.DateTimeField(verbose_name='Дата публикации', default = timezone.now)
 	final_date    = models.DateTimeField(verbose_name='Дата окончания',
 						blank=True, default = timezone.now()+datetime.timedelta(days=1))
 	win_vote      = models.IntegerField(verbose_name='Досрочная победа с ', default=0)
@@ -38,8 +38,9 @@ class Choice(models.Model):
 	votes        = models.IntegerField(verbose_name='Количество голосов', default=0)
 	first_name   = models.CharField(verbose_name='Имя', max_length=100, blank=True, null=True)
 	last_name    = models.CharField(verbose_name='Фамилия', max_length=100, blank=True, null=True)
-	age          = models.PositiveSmallIntegerField(verbose_name='Возраст', blank=True, null=True, choices=YEARS_OLD)
-	photo_person = models.ImageField(upload_to='polls/person/photos/', blank=True)
+	# age          = models.PositiveSmallIntegerField(verbose_name='Возраст', blank=True, null=True, choices=YEARS_OLD)
+	age          = models.DateField("Дата рождения", blank=True, null=True)
+	photo_person = models.ImageField(upload_to='polls/person/photos/', blank=True, null=True)
 	bio_person   = models.TextField(max_length=500, help_text='Кратко об участнике',
 						verbose_name='Краткая биография' )
 

@@ -1,5 +1,6 @@
 from django.contrib import admin
-
+import datetime
+from django.utils import timezone
 from .models import Question, Choice
 
 class ChoiceInline(admin.TabularInline): #добавление в вопрос вариантов при создании вопроса
@@ -21,6 +22,7 @@ class ChoiceAdmin(admin.ModelAdmin):
         ('Участие в опросе',  {'fields': ['question_id']}),
     ]
     list_display = ('__str__', 'age')
+
 
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(Choice, ChoiceAdmin)

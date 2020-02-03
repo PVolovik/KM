@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
+import datetime
 from .models import Question, Choice
 
 
@@ -24,12 +25,18 @@ class ArchiveView(generic.ListView):
 
 class ChoiceListView(generic.ListView):
     model = Choice
-    paginate_by = 2
+    paginate_by = 4
 
 
 class ChoiceDetailView(generic.DetailView):
     model = Choice
     template_name = 'polls/choice_detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ChoiceDetailView, self).get_context_data(**kwargs)
+        delta=datetime.datetime.now().date()-self.object.age
+        context['age'] = delta.days//365
+        return context
 
 
 class DetailView(generic.DetailView):

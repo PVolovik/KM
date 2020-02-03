@@ -6,7 +6,7 @@
     <h2>{{ choice }}</h2>
     <img src="{{ choice.photo_person.url}}" alt="{{ choice }} " width="150" height="174" class="left_img">
 
-    <p>Возраст: {{choice.age}}</p>
+    <p>День рождения: {{choice.age|date:"d.m.Y"}} ({{age}} лет)</p>
     <p>Биография: {{choice.bio_person}}</p>
     <p>В голосовании "{{choice.question_id}}" набрал {{choice.votes}} голос(-а, -ов)</p>
 
